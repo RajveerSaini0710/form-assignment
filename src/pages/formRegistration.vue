@@ -34,13 +34,13 @@
             <divider align="left" type="solid">
                 <b class="text-purple-600">Date Of Birth</b>
             </divider>
-            <div class="mb-10">
-                <span class="p-float-label ml-4 ">
+            <div class="mb-2 ">
+                <span class="p-float-label ml-4  ">
                     <Calendar v-model="data.dob" id="myCalendar" inputId="Birth_date" showIcon iconDisplay="input" />
                     <label for="myCalendar">DOB</label>
                 </span>
+                <BaseButton class="font-bold flex items-center justify-end " @click="submitForm">Submit</BaseButton>
             </div>
-            <BaseButton type="submit" normalButton label="Submit" size="small" />
         </BaseCard>
     </section>
 </template>
