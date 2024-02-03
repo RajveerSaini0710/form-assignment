@@ -40,6 +40,7 @@
                     <label for="myCalendar">DOB</label>
                 </span>
             </div>
+            <BaseButton type="submit" normalButton label="Submit" size="small" />
         </BaseCard>
     </section>
 </template>
