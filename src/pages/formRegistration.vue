@@ -4,17 +4,17 @@
             <h1 class="text-purple-700 inline-block font-black text-2xl mb-6">Fill This Form :</h1>
             <div class="flex items-center mb-4 flex-wrap ml-4 ">
                 <inputText @keypress="isLetter($event)" label="First Name" v-model="data.firstName" size="small"
-                    placeholder="John" class="mr-12 " />
+                    placeholder="John" class="mr-12 " :errorMessage="formError.firstName" />
                 <inputText @keypress="isLetter($event)" label="Middle Name" v-model="data.middleName" size="small"
-                    placeholder="Martus" class="mr-12" />
+                    placeholder="Martus" class="mr-12" :errorMessage="formError.middleName" />
                 <inputText @keypress="isLetter($event)" label="Last Name" v-model="data.lastName" size="small"
-                    placeholder="Doe" />
+                    placeholder="Doe" :errorMessage="formError.lastName" />
             </div>
             <div class="flex items-center mb-10 flex-wrap ml-4 ">
                 <inputText @keypress="isNumber($event)" type="number" label="Phone Number" v-model="data.phoneNumber"
-                    size="small" placeholder="9999999999" class="mr-12" />
+                    size="small" placeholder="9999999999" class="mr-12" :errorMessage="formError.phoneNumber" />
                 <inputText @keypress="isEmail($event)" label="Email Id" v-model="data.email" size="small"
-                    placeholder="john123@gmail.com" />
+                    placeholder="john123@gmail.com" :errorMessage="formError.email" />
             </div>
             <divider align="left" type="solid">
                 <b class="text-purple-600  ">Weekdays</b>
@@ -25,6 +25,7 @@
                     <Checkbox v-model="data.selectedDays" :id="day.id" :value="day.name" class="mr-2" name="weekdays" />
                     <label :for="day.id">{{ day.name }}</label>
                 </div>
+                <InlineMessage class="text-xs text-red-600 ml-4 ">{{ formError.selectedDays }}</InlineMessage>
             </div>
             <divider align="left" type="solid">
                 <b class="text-purple-600">Gender</b>
@@ -34,6 +35,7 @@
                     <RadioButton v-model="data.selectedGender" :id="gender.id" name="gender" :value="gender.name" />
                     <label :for="gender.id" class="ml-2">{{ gender.name }}</label>
                 </div>
+                <InlineMessage class="text-xs text-red-600 inline-block">{{ formError.selectedGender }}</InlineMessage>
             </div>
             <divider align="left" type="solid">
                 <b class="text-purple-600">Date Of Birth</b>
@@ -42,6 +44,7 @@
                 <span class="p-float-label ml-4  ">
                     <Calendar v-model="data.dob" id="myCalendar" inputId="Birth_date" showIcon iconDisplay="input" />
                     <label for="myCalendar">DOB</label>
+                    <InlineMessage class="text-xs text-red-600 ">{{ formError.dob }}</InlineMessage>
                 </span>
                 <BaseButton class="font-bold flex items-center justify-end " @click="submitForm">Submit</BaseButton>
             </div>
@@ -50,11 +53,13 @@
 </template>
   
 <script>
-import inputText from '../components/formInputs/inputText.vue';
 import Checkbox from 'primevue/checkbox';
 import Divider from 'primevue/divider';
 import RadioButton from 'primevue/radiobutton';
 import Calendar from 'primevue/calendar';
+import InlineMessage from 'primevue/inlinemessage';
+import axios from 'axios'
+import inputText from '../components/formInputs/inputText.vue'
 
 
 export default {
@@ -67,6 +72,17 @@ export default {
     },
     data() {
         return {
+            isFormDataValid: true,
+            formError: {
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                phoneNumber: '',
+                email: '',
+                selectedDays: '',
+                selectedGender: '',
+                dob: ''
+            },
             weekdays: [
                 { id: "mon", name: "Monday" },
                 { id: "tue", name: "Tuesday" },
@@ -91,6 +107,79 @@ export default {
         };
     },
     methods: {
+        validateForm() {
+            this.isFormDataValid = true
+            this.formError = {
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                phoneNumber: '',
+                email: '',
+                selectedDays: '',
+                selectedGender: '',
+                dob: ''
+            }
+            if (!this.data.firstName) {
+                this.formError.firstName = 'Please Enter The First Name'
+                this.isFormDataValid = false
+            }
+            if (!this.data.middleName) {
+                this.formError.middleName = 'Please Enter The Middle Name'
+                this.isFormDataValid = false
+            }
+            if (!this.data.lastName) {
+                this.formError.lastName = 'Please Enter The Last Name'
+                this.isFormDataValid = false
+            }
+            if (!this.data.phoneNumber) {
+                this.formError.phoneNumber = 'Please Enter The Phone Number'
+                this.isFormDataValid = false
+            }
+            if (!this.data.email) {
+                this.formError.email = 'Please Enter The Email Id'
+                this.isFormDataValid = false
+            }
+            if (this.data.selectedDays.length === 0) {
+                this.formError.selectedDays = 'Please Select the days'
+                this.isFormDataValid = false
+            }
+            if (!this.data.selectedGender) {
+                this.formError.selectedGender = 'Please Select The Gender'
+                this.isFormDataValid = false
+            }
+            if (!this.data.dob) {
+                this.formError.dob = 'Please Select Your Date Of Birth'
+                this.isFormDataValid = false
+            }
+        },
+        submitForm() {
+            this.validateForm()
+            if (!this.isFormDataValid) {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            } else {
+                const payload = {
+                    first_name: this.data.firstName,
+                    middle_name: this.data.middleName,
+                    last_name: this.data.lastName,
+                    phone_number: this.data.phoneNumber,
+                    email_id: this.data.email,
+                    selected_days: this.data.selectedDays,
+                    selected_gender: this.data.selectedGender,
+                    dob: this.data.dob
+                }
+                axios.post('https://saini-lifters-default-rtdb.firebaseio.com/form.json', payload)
+                    .then((res) => {
+                        console.log(res)
+                        this.$router.push({
+                            path: '/data'
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        },
+
         isLetter(e) {
             let char = String.fromCharCode(e.keyCode); // Get the character
             if (/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
