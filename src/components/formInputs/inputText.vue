@@ -3,7 +3,7 @@
         <label :for="label" class="text-purple-600">{{ label }}</label>
         <InputText type="text" :id="label" v-model="value" :size="size"
             class="w-full border border-purple-200 focus:ring-transparent focus:border-purple-500 "
-            :placeholder="placeholder" />
+            :placeholder="placeholder" @input="$emit('update:modelValue', $event.target.value)" />
     </div>
 </template>
 
@@ -12,6 +12,9 @@
 import InputText from 'primevue/inputtext';
 
 export default {
+    components: {
+        InputText
+    },
     props: {
         modelValue: {
             type: String,
@@ -38,10 +41,17 @@ export default {
 
 
     },
-    components: {
-        InputText
-    }
-
+    emits: ['update:modelValue'],
+    computed: {
+        value: {
+            get() {
+                return this.modelValue
+            },
+            set(value) {
+                this.$emit('update:modelValue', value)
+            },
+        },
+    },
 
 }
 </script>

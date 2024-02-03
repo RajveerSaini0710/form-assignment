@@ -3,14 +3,18 @@
         <BaseCard>
             <h1 class="text-purple-700 inline-block font-black text-2xl mb-6">Fill This Form :</h1>
             <div class="flex items-center mb-4 flex-wrap ml-4 ">
-                <inputText label="First Name" v-model="data.firstName" size="small" placeholder="John" class="mr-12 " />
-                <inputText label="Middle Name" v-model="data.middleName" size="small" placeholder="Martus" class="mr-12" />
-                <inputText label="Last Name" v-model="data.lastName" size="small" placeholder="Doe" />
+                <inputText @keypress="isLetter($event)" label="First Name" v-model="data.firstName" size="small"
+                    placeholder="John" class="mr-12 " />
+                <inputText @keypress="isLetter($event)" label="Middle Name" v-model="data.middleName" size="small"
+                    placeholder="Martus" class="mr-12" />
+                <inputText @keypress="isLetter($event)" label="Last Name" v-model="data.lastName" size="small"
+                    placeholder="Doe" />
             </div>
             <div class="flex items-center mb-10 flex-wrap ml-4 ">
-                <inputText type="number" label="Phone Number" v-model="data.phoneNumber" size="small"
-                    placeholder="+91 0000000000" class="mr-12" />
-                <inputText label="Email Id" v-model="data.email" size="small" placeholder="test123@gmail.com" />
+                <inputText @keypress="isNumber($event)" type="number" label="Phone Number" v-model="data.phoneNumber"
+                    size="small" placeholder="9999999999" class="mr-12" />
+                <inputText @keypress="isEmail($event)" label="Email Id" v-model="data.email" size="small"
+                    placeholder="john123@gmail.com" />
             </div>
             <divider align="left" type="solid">
                 <b class="text-purple-600  ">Weekdays</b>
@@ -85,6 +89,29 @@ export default {
                 dob: null
             }
         };
+    },
+    methods: {
+        isLetter(e) {
+            let char = String.fromCharCode(e.keyCode); // Get the character
+            if (/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
+            else e.preventDefault(); // If not match, don't add to input text
+        },
+        isNumber(e) {
+            e = (e) ? e : window.event;
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                e.preventDefault();;
+            } else {
+                return true;
+            }
+        },
+        isEmail(e) {
+            return String(e)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                )
+        },
     }
 };
 </script>
