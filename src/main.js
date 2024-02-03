@@ -4,6 +4,7 @@ import App from "./App.vue";
 import PrimeVue from "primevue/config";
 import Lara from "./presets/lara";
 import router from "./router.js";
+import "primevue/resources/themes/lara-light-purple/theme.css";
 
 import BaseCard from "../src/components/ui/baseCard.vue";
 
@@ -12,7 +13,7 @@ const app = createApp(App);
 app.component("BaseCard", BaseCard);
 
 app.use(PrimeVue, {
-  unstyled: true,
+  unstyled: false,
   pt: Lara,
 });
 app.use(router);
