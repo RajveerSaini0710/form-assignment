@@ -1,8 +1,8 @@
 <template>
     <div class="inline-block" v-if="!link && !outlinedLink && !normalButton && primeVueButton">
         <Button :label="label" :raised="raised" :outlined="outlined" :icon="icon" :badge="badge" :disabled="disabled"
-            :size="size" :severity="severity" :badgeClass="badgeClass" :loading="loading"
-            class="text-purple-800 py-3 px-6 rounded-3xl mr-2 border-purple-600 hover:bg-purple-50 active:bg-purple-50" />
+            :size="size" :severity="severity" :badgeClass="badgeClass" :loading="loading" :rounded="rounded"
+            class=" mr-2 border-purple-400 text-purple-700  hover:bg-purple-100 active:bg-purple-100" />
     </div>
     <div v-else-if="!link && !outlinedLink && !primeVueButton && normalButton">
         <button
@@ -28,6 +28,7 @@
 
 <script>
 import Button from 'primevue/button'
+import 'primeicons/primeicons.css';
 
 export default {
     props: {
@@ -46,6 +47,7 @@ export default {
         normalButton: { type: Boolean, default: false },
         primeVueButton: { type: Boolean, default: false },
         outlinedLink: { type: Boolean, default: false },
+        rounded: { type: Boolean, default: false },
     },
     components: {
         Button,

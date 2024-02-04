@@ -46,7 +46,7 @@
                     <label for="myCalendar">DOB</label>
                     <InlineMessage class="text-xs text-red-600 ">{{ formError.dob }}</InlineMessage>
                 </span>
-                <BaseButton class="font-bold flex items-center justify-end " @click="submitForm">Submit</BaseButton>
+                <BaseButton class="font-bold flex items-center justify-end" @click="submitForm">Submit</BaseButton>
             </div>
         </BaseCard>
     </section>
