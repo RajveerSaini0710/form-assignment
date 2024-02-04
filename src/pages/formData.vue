@@ -1,5 +1,5 @@
 <template>
-    <section class="h-lvh">
+    <section>
         <div v-if="!isFormDataLoaded" class="flex justify-center items-center h-lvh">
             <ProgressSpinner style="width: 100px; height: 100px" strokeWidth="4" fill="var(--surface-ground)"
                 animationDuration="1s" aria-label="Custom ProgressSpinner" />
@@ -18,11 +18,15 @@
                     </template>
                 </Column>
             </DataTable>
+            {{ isFormDataEdit }}
         </div>
-        <div v-if="isMessage"
-            class="border py-3 px-6 max-w-fit font-bold text-white border-purple-700 bg-purple-800 flex justify-center items-center">
-            <Message :severity="messageType">{{ messageInfo }}</Message>
-        </div>
+        <section class="w-full mt-10 flex justify-center items-end">
+            <div v-if="isMessage"
+                class="border py-3 px-6 max-w-fit font-bold text-white border-purple-700 bg-purple-800 flex justify-center items-center">
+                <Message :severity="messageType">{{ messageInfo }}</Message>
+            </div>
+        </section>
+
     </section>
 </template>
 
@@ -32,7 +36,7 @@ import Column from 'primevue/column';
 import axios from 'axios'
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
-import Dialog from 'primevue/dialog';
+
 
 
 export default {
@@ -43,8 +47,8 @@ export default {
     },
     data() {
         return {
-            visible: false,
-            isFormDataEdit: false,
+
+            isFormDataEdit: true,
             isFormDataLoaded: false,
             formData: [],
             columns: [
@@ -92,24 +96,27 @@ export default {
                 })
         },
         editFormData(id) {
-            this.isFormDataEdit = !this.isFormDataEdit
+            this.isFormDataEdit = true
             console.log(id);
         },
         deleteFormData(id) {
-            axios.delete(`https://saini-lifters-default-rtdb.firebaseio.com/formss/${id}.json`)
+            axios.delete(`https://saini-lifters-default-rtdb.firebaseio.com/form/${id}.json`)
                 .then((res) => {
                     console.log(res);
                     if (res.status === 200) {
                         this.isMessage = true
                         this.messageType = 'success';
                         this.messageInfo = "Successfully Deleted The Data"
-                        // window.location.reload()
+                        window.location.reload()
                     }
                 })
                 .catch((err) => {
                     this.isMessage = true
                     this.messageType = 'error';
                     this.messageInfo = `Error Occured While Deleting The Data - ${err}`
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
                 })
         }
     }
