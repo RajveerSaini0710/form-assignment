@@ -10,12 +10,17 @@
                 </Column>
                 <Column :header="buttonTitle" :exportable="false" style="min-width:8rem" class="flex">
                     <template #body="slotProps">
-                        <BaseButton primeVueButton rounded icon="pi pi-pencil" />
-                        <BaseButton primeVueButton rounded icon="pi pi-trash" size="small" severity="danger" />
+
+                        <BaseButton primeVueButton rounded icon="pi pi-pencil" @click="editFormData(slotProps.data.id)" />
+                        <BaseButton primeVueButton rounded icon="pi pi-trash" size="small" severity="danger"
+                            @click="deleteFormData(slotProps.data.id)" />
+
                     </template>
                 </Column>
             </DataTable>
         </div>
+        <Message :severity="messageType">{{ messageInfo }}</Message>
+        <Message :severity="messageType">{{ messageInfo }}</Message>
     </section>
 </template>
 
@@ -24,6 +29,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import axios from 'axios'
 import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
 
 
 export default {
@@ -44,7 +50,10 @@ export default {
                 { field: "gender", header: 'Gender' },
                 { field: "dateOfBirth", header: 'Date Of Birth' },
             ],
-            buttonTitle: 'Edit / Delete'
+            buttonTitle: 'Edit / Delete',
+            // success/error message 
+            messageType: null,
+            messageInfo: ''
         }
     },
     mounted() {
@@ -74,6 +83,24 @@ export default {
                 })
                 .catch((err) => {
                     console.log(err);
+                })
+        },
+        editFormData(id) {
+            console.log("edit:", id);
+        },
+        deleteFormData(id) {
+            axios.delete(`https://saini-lifters-default-rtdb.firebaseio.com/form/${id}.json`)
+                .then((res) => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        this.messageType = 'success';
+                        this.messageInfo = "Successfully Deleted The Data"
+                        window.location.reload()
+                    }
+                })
+                .catch((err) => {
+                    this.messageType = 'error';
+                    this.messageInfo = `Error Occured While Deleting The Data - ${err}`
                 })
         }
     }
