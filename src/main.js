@@ -20,4 +20,5 @@ app.use(PrimeVue, {
   unstyled: false,
   pt: Lara,
 });
+
 app.mount("#app");

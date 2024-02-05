@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: "/data",
       name: "Form Data",
-      component: () => import("./pages/formData.vue"),
+      component: () => import("./pages/formDataCopy.vue"),
     },
 
     {
