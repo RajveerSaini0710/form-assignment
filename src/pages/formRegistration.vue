@@ -201,6 +201,28 @@ export default {
         },
         updateFormData() {
             console.log("update form works");
+            this.validateForm()
+            if (!this.isFormDataValid) {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            } else {
+                const payload = {
+                    first_name: this.data.firstName,
+                    middle_name: this.data.middleName,
+                    last_name: this.data.lastName,
+                    phone_number: this.data.phoneNumber,
+                    email_id: this.data.email,
+                    selected_days: this.data.selectedDays,
+                    selected_gender: this.data.selectedGender,
+                    dob: this.data.dob
+                }
+                axios.patch(`https://saini-lifters-default-rtdb.firebaseio.com/form/${this.formEditDataId}.json`, payload)
+                    .then((res) => {
+                        console.log(res);
+                        this.$router.push('/data')
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+            }
         },
 
         isLetter(e) {
