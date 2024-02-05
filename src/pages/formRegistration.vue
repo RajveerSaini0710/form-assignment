@@ -109,7 +109,24 @@ export default {
             }
         };
     },
+    mounted() {
+        this.getFormData()
+    },
     methods: {
+        getFormData() {
+            axios.get(`https://saini-lifters-default-rtdb.firebaseio.com/form/${this.formEditDataId}.json`)
+                .then((res) => {
+                    const formData = res.data
+                    this.data.firstName = formData.first_name
+                    this.data.middleName = formData.middle_name
+                    this.data.lastName = formData.last_name
+                    this.data.phoneNumber = formData.phone_number
+                    this.data.email = formData.email_id
+                    this.data.selectedDays = formData.selected_days
+                    this.data.selectedGender = formData.selected_gender
+                    this.data.dob = formData.dob.slice('T', 10)
+                })
+        },
         validateForm() {
             this.isFormDataValid = true
             this.formError = {
