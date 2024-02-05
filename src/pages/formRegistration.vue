@@ -110,7 +110,9 @@ export default {
         };
     },
     mounted() {
-        this.getFormData()
+        if (this.isFormEditPage) {
+            this.getFormData()
+        }
     },
     methods: {
         getFormData() {
