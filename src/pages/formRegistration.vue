@@ -200,7 +200,6 @@ export default {
             }
         },
         updateFormData() {
-            console.log("update form works");
             this.validateForm()
             if (!this.isFormDataValid) {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
