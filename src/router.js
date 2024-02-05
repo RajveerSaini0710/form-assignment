@@ -10,15 +10,16 @@ const router = createRouter({
       component: () => import("./pages/formRegistration.vue"),
     },
     {
-      path: "/data",
-      name: "Form Data",
-      component: () => import("./pages/formData.vue"),
-    },
-    {
       path: "/edit/:id",
       name: "Form Detail",
       component: () => import("./pages/formRegistration.vue"),
     },
+    {
+      path: "/data",
+      name: "Form Data",
+      component: () => import("./pages/formData.vue"),
+    },
+
     {
       path: "/:notFound(.*)",
       name: "NotFoundPage",

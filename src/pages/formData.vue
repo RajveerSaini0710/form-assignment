@@ -36,8 +36,6 @@ import axios from 'axios'
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 
-
-
 export default {
     components: {
         DataTable,
@@ -46,7 +44,6 @@ export default {
     },
     data() {
         return {
-
             isFormDataEdit: true,
             isFormDataLoaded: false,
             formData: [],

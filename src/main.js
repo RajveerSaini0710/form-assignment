@@ -11,6 +11,8 @@ import BaseButton from "../src/components/ui/baseButton.vue";
 
 const app = createApp(App);
 
+app.use(router);
+
 app.component("BaseCard", BaseCard);
 app.component("BaseButton", BaseButton);
 
@@ -18,5 +20,4 @@ app.use(PrimeVue, {
   unstyled: false,
   pt: Lara,
 });
-app.use(router);
 app.mount("#app");
