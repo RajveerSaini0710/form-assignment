@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import("./pages/formData.vue"),
     },
     {
+      path: "/edit/:id",
+      name: "Form Detail",
+      component: () => import("./pages/formRegistration.vue"),
+    },
+    {
       path: "/:notFound(.*)",
       name: "NotFoundPage",
       redirect: "/form",

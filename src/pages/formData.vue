@@ -18,7 +18,6 @@
                     </template>
                 </Column>
             </DataTable>
-            {{ isFormDataEdit }}
         </div>
         <section class="w-full mt-10 flex justify-center items-end">
             <div v-if="isMessage"
@@ -97,7 +96,7 @@ export default {
         },
         editFormData(id) {
             this.isFormDataEdit = true
-            console.log(id);
+            this.$router.push(`/edit/${id}`)
         },
         deleteFormData(id) {
             axios.delete(`https://saini-lifters-default-rtdb.firebaseio.com/form/${id}.json`)

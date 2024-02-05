@@ -2,7 +2,8 @@
 	<header>
 		<nav>
 			<h1 class="text-2xl">
-				<router-link to="/"> Form {{ this.$route.fullPath === '/form' ? ' Registration' : " Data" }}
+				<router-link to="/"> Form {{ this.$route.fullPath.includes('form') ? ' Registration' :
+					(this.$route.fullPath.includes('edit') ? "Edit" : " Data") }}
 				</router-link>
 			</h1>
 			<ul>

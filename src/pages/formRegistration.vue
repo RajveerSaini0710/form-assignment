@@ -3,17 +3,17 @@
         <BaseCard>
             <h1 class="text-purple-700 inline-block font-black text-2xl mb-6">Fill This Form :</h1>
             <div class="flex items-center mb-4 flex-wrap ml-4 ">
-                <inputText @keypress="isLetter($event)" label="First Name" v-model="data.firstName" size="small"
+                <formInput @keypress="isLetter($event)" label="First Name" v-model="data.firstName" size="small"
                     placeholder="John" class="mr-12 " :errorMessage="formError.firstName" />
-                <inputText @keypress="isLetter($event)" label="Middle Name" v-model="data.middleName" size="small"
+                <formInput @keypress="isLetter($event)" label="Middle Name" v-model="data.middleName" size="small"
                     placeholder="Martus" class="mr-12" :errorMessage="formError.middleName" />
-                <inputText @keypress="isLetter($event)" label="Last Name" v-model="data.lastName" size="small"
+                <formInput @keypress="isLetter($event)" label="Last Name" v-model="data.lastName" size="small"
                     placeholder="Doe" :errorMessage="formError.lastName" />
             </div>
             <div class="flex items-center mb-10 flex-wrap ml-4 ">
-                <inputText @keypress="isNumber($event)" type="number" label="Phone Number" v-model="data.phoneNumber"
+                <formInput @keypress="isNumber($event)" type="number" label="Phone Number" v-model="data.phoneNumber"
                     size="small" placeholder="9999999999" class="mr-12" :errorMessage="formError.phoneNumber" />
-                <inputText @keypress="isEmail($event)" label="Email Id" v-model="data.email" size="small"
+                <formInput @keypress="isEmail($event)" label="Email Id" v-model="data.email" size="small"
                     placeholder="john123@gmail.com" :errorMessage="formError.email" />
             </div>
             <divider align="left" type="solid">
@@ -46,7 +46,9 @@
                     <label for="myCalendar">DOB</label>
                     <InlineMessage class="text-xs text-red-600 ">{{ formError.dob }}</InlineMessage>
                 </span>
-                <BaseButton class="font-bold flex items-center justify-end" @click="submitForm">Submit</BaseButton>
+                <BaseButton class="font-bold flex items-center justify-end"
+                    @click="isFormEditPage ? updateFormData() : submitFormData()">{{ isFormEditPage ? 'Update' : 'Submit' }}
+                </BaseButton>
             </div>
         </BaseCard>
     </section>
@@ -58,13 +60,12 @@ import Divider from 'primevue/divider';
 import RadioButton from 'primevue/radiobutton';
 import Calendar from 'primevue/calendar';
 import InlineMessage from 'primevue/inlinemessage';
+import formInput from '../components/formInputs/formInput.vue';
 import axios from 'axios'
-import inputText from '../components/formInputs/inputText.vue'
-
 
 export default {
     components: {
-        inputText,
+        formInput,
         Checkbox,
         Divider,
         RadioButton,
@@ -72,6 +73,8 @@ export default {
     },
     data() {
         return {
+            isFormEditPage: this.$route.path.includes('edit'),
+            formEditDataId: this.$route.params.id || 0,
             isFormDataValid: true,
             formError: {
                 firstName: '',
@@ -152,7 +155,7 @@ export default {
                 this.isFormDataValid = false
             }
         },
-        submitForm() {
+        submitFormData() {
             this.validateForm()
             if (!this.isFormDataValid) {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -178,6 +181,9 @@ export default {
                         console.log(err);
                     })
             }
+        },
+        updateFormData() {
+            console.log("update form works");
         },
 
         isLetter(e) {
