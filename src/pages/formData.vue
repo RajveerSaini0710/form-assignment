@@ -11,7 +11,8 @@
                 <Column :header="buttonTitle" :exportable="false" style="min-width:8rem" class="flex">
                     <template #body="slotProps">
 
-                        <BaseButton primeVueButton rounded icon="pi pi-pencil" @click="editFormData(slotProps.data.id)" />
+                        <BaseButton primeVueButton rounded icon="pi pi-pencil"
+                            @click="editFormData(slotProps.data.id)" />
                         <BaseButton primeVueButton rounded icon="pi pi-trash" size="small" severity="danger"
                             @click="deleteFormData(slotProps.data.id)" />
 
@@ -71,6 +72,7 @@ export default {
             axios.get('https://saini-lifters-default-rtdb.firebaseio.com/form.json')
                 .then((res) => {
                     this.isFormDataLoaded = true
+                    console.log(res);
                     const data = res.data
                     let index = 1
                     for (const id in data) {
